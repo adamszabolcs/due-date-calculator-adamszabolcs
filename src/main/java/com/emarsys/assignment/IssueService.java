@@ -1,4 +1,4 @@
-package com.emarsys.assingment;
+package com.emarsys.assignment;
 
 public class IssueService {
 }
