@@ -2,7 +2,6 @@ package com.emarsys.assignment;
 
 import com.emarsys.assignment.exception.BadSubmitDate;
 import com.emarsys.assignment.exception.BadTurnAroundTime;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,5 +57,11 @@ public class IssueServiceTest {
     public void throwExceptionIfSubmitDateTimeIsOnWorkingHours() {
         calendar.set(Calendar.HOUR_OF_DAY, 6);
         assertThrows(BadSubmitDate.class,() -> issueService.calculateDueDate(calendar, 2));
+    }
+
+    @Test
+    public void changeDayIfTurnAroundTimeIsBiggerThanWorkHour() {
+        Calendar testCalendar = issueService.calculateDueDate(calendar, 8);
+        assertEquals(4, testCalendar.get(Calendar.DAY_OF_WEEK));
     }
 }
