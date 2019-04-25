@@ -24,17 +24,19 @@ public class IssueService {
 
         Calendar calendar = Calendar.getInstance();
         int submitHour = time + turnAroundTime;
-        int dayChange = 0;
 
         if (submitHour > WORK_END_TIME) {
             submitHour = WORKHOURS + (submitHour % WORKHOURS);
-            dayChange++;
+            day++;
         }
         if (turnAroundTime > WORKHOURS) {
-            dayChange += turnAroundTime / WORKHOURS;
+            day += turnAroundTime / WORKHOURS;
+        }
+        if (day > WORK_DAYS) {
+            day = day % WORK_DAYS;
         }
 
-        calendar.set(Calendar.DAY_OF_WEEK, day + dayChange);
+        calendar.set(Calendar.DAY_OF_WEEK, day);
         calendar.set(Calendar.HOUR_OF_DAY, submitHour);
         return calendar;
     }
