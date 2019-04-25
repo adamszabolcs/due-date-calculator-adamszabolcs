@@ -1,12 +1,13 @@
 package com.emarsys.assignment;
 
+import com.emarsys.assignment.exception.BadTurnAroundTime;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class IssueServiceTest {
 
@@ -31,9 +32,14 @@ public class IssueServiceTest {
     }
 
     @Test()
-    public void checkForAddingHours() {
+    public void testForAddingHours() {
         Calendar testCalendar = issueService.calculateDueDate(calendar, 2);
-        assertTrue(testCalendar.get(Calendar.HOUR_OF_DAY)-calendar.get(Calendar.HOUR_OF_DAY) == 2,
-                "Adding hours works");
+        assertEquals(2, testCalendar.get(Calendar.HOUR_OF_DAY)-calendar.get(Calendar.HOUR_OF_DAY));
+    }
+
+    @Test
+    public void throwExceptionIfTurnAroundTimeIsZero() {
+
+        assertThrows(BadTurnAroundTime.class, () -> issueService.calculateDueDate(calendar, 0));
     }
 }
