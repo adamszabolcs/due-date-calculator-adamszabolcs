@@ -74,7 +74,8 @@ public class IssueServiceTest {
     @Test
     public void checkIfDayIsSetProperlyWhenWeekendComes() {
         calendar.set(Calendar.DAY_OF_WEEK, 5);
-        Calendar testCalendar = issueService.calculateDueDate(calendar, 12);
-        assertEquals(2, testCalendar.get(Calendar.DAY_OF_WEEK));
+        calendar.set(Calendar.HOUR_OF_DAY,16);
+        Calendar testCalendar = issueService.calculateDueDate(calendar, 2);
+        assertEquals(10, testCalendar.get(Calendar.HOUR_OF_DAY));
     }
 }
