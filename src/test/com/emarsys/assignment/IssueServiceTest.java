@@ -64,4 +64,10 @@ public class IssueServiceTest {
         Calendar testCalendar = issueService.calculateDueDate(calendar, 8);
         assertEquals(4, testCalendar.get(Calendar.DAY_OF_WEEK));
     }
+
+    @Test
+    public void checkIfHourIsSetProperlyWhenTimeIsBiggerThanWorkHour() {
+        Calendar testCalendar = issueService.calculateDueDate(calendar, 8);
+        assertEquals(11, testCalendar.get(Calendar.HOUR_OF_DAY));
+    }
 }
