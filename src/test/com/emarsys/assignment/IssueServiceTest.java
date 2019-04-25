@@ -39,7 +39,11 @@ public class IssueServiceTest {
 
     @Test
     public void throwExceptionIfTurnAroundTimeIsZero() {
-
         assertThrows(BadTurnAroundTime.class, () -> issueService.calculateDueDate(calendar, 0));
+    }
+
+    @Test
+    public void throwExceptionIfTurnAroundTimeIsNegative() {
+        assertThrows(BadTurnAroundTime.class, () -> issueService.calculateDueDate(calendar, -3));
     }
 }
