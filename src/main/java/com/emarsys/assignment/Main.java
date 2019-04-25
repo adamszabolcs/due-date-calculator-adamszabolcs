@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         IssueService issueService = new IssueService();
-        issueService.calculateDueDate(Calendar.getInstance(), 14);
+        System.out.println(issueService.calculateDueDate(Calendar.getInstance(), 8));
     }
 
 }
