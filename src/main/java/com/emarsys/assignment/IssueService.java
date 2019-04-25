@@ -3,6 +3,7 @@ package com.emarsys.assignment;
 import com.emarsys.assignment.exception.BadSubmitDate;
 import com.emarsys.assignment.exception.BadTurnAroundTime;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class IssueService {
@@ -12,13 +13,15 @@ public class IssueService {
     public static final int WORK_END_TIME = 17;
     public static final int WORKHOURS = 8;
 
-    public Calendar calculateDueDate(Calendar submitDate, int turnAroundTime) {
+    public String calculateDueDate(Calendar submitDate, int turnAroundTime) {
+        submitDate.setFirstDayOfWeek(Calendar.MONDAY);
         int time = submitDate.get(Calendar.HOUR_OF_DAY);
         int day = submitDate.get(Calendar.DAY_OF_WEEK);
 
         if (turnAroundTime <= 0) {
             throw new BadTurnAroundTime("Bad turnaround time!");
-        } else if (day > WORK_DAYS || (time < WORK_START_TIME || time > WORK_END_TIME)) {
+        } else if ((day == Calendar.SATURDAY || day == Calendar.SUNDAY)
+                || (time < WORK_START_TIME || time > WORK_END_TIME)) {
             throw new BadSubmitDate("Can't submit issue on the submitted date!");
         }
 
@@ -32,13 +35,15 @@ public class IssueService {
         if (turnAroundTime > WORKHOURS) {
             day += turnAroundTime / WORKHOURS;
         }
-        if (day > WORK_DAYS) {
-            day = day % WORK_DAYS;
+        if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+            day = (day % WORK_DAYS);
         }
 
         calendar.set(Calendar.DAY_OF_WEEK, day);
         calendar.set(Calendar.HOUR_OF_DAY, submitHour);
-        return calendar;
+
+        SimpleDateFormat format = new SimpleDateFormat("hh:mma E");
+        return format.format(calendar.getTime());
     }
 
 }
