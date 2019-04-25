@@ -19,7 +19,7 @@ public class IssueServiceTest {
     public void init() {
         issueService = new IssueService();
         calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_WEEK, 3);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
         calendar.set(Calendar.HOUR_OF_DAY, 11);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -33,8 +33,8 @@ public class IssueServiceTest {
 
     @Test()
     public void testForAddingHours() {
-        Calendar testCalendar = issueService.calculateDueDate(calendar, 2);
-        assertEquals(2, testCalendar.get(Calendar.HOUR_OF_DAY)-calendar.get(Calendar.HOUR_OF_DAY));
+        String returnValue = issueService.calculateDueDate(calendar, 2);
+        assertEquals(1, Integer.parseInt(returnValue.substring(0,2)));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class IssueServiceTest {
 
     @Test
     public void throwExceptionIfSubmitDateDayIsWeekEnd() {
-        calendar.set(Calendar.DAY_OF_WEEK, 7);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         assertThrows(BadSubmitDate.class, () -> issueService.calculateDueDate(calendar, 2));
     }
 
@@ -61,21 +61,21 @@ public class IssueServiceTest {
 
     @Test
     public void changeDayIfTurnAroundTimeIsBiggerThanWorkHour() {
-        Calendar testCalendar = issueService.calculateDueDate(calendar, 8);
-        assertEquals(4, testCalendar.get(Calendar.DAY_OF_WEEK));
+        String returnValue = issueService.calculateDueDate(calendar, 8);
+        assertEquals("Thu", returnValue.substring(8));
     }
 
     @Test
     public void checkIfHourIsSetProperlyWhenTimeIsBiggerThanWorkHour() {
-        Calendar testCalendar = issueService.calculateDueDate(calendar, 8);
-        assertEquals(11, testCalendar.get(Calendar.HOUR_OF_DAY));
+        String returnValue = issueService.calculateDueDate(calendar, 8);
+        assertEquals(11, Integer.parseInt(returnValue.substring(0, 2)));
     }
 
     @Test
     public void checkIfDayIsSetProperlyWhenWeekendComes() {
-        calendar.set(Calendar.DAY_OF_WEEK, 5);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         calendar.set(Calendar.HOUR_OF_DAY,16);
-        Calendar testCalendar = issueService.calculateDueDate(calendar, 2);
-        assertEquals(10, testCalendar.get(Calendar.HOUR_OF_DAY));
+        String returnValue = issueService.calculateDueDate(calendar, 2);
+        assertEquals("Mon", returnValue.substring(8));
     }
 }
