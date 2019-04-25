@@ -17,6 +17,15 @@ public class IssueService {
         }
         Calendar calendar = Calendar.getInstance();
         int turnAroundHour = time + turnAroundTime;
+        int dayChange = 0;
+        if (turnAroundHour > 17) {
+            turnAroundHour = 8 + (turnAroundHour % 8);
+            dayChange++;
+        }
+        if (turnAroundTime > 8) {
+            dayChange += turnAroundTime / 8;
+        }
+        calendar.set(Calendar.DAY_OF_WEEK, day + dayChange);
         calendar.set(Calendar.HOUR_OF_DAY, turnAroundHour);
         return calendar;
     }
