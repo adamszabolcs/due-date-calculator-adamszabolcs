@@ -1,8 +1,8 @@
 package com.emarsys.assignment;
 
+import com.emarsys.assignment.exception.BadSubmitDate;
 import com.emarsys.assignment.exception.BadTurnAroundTime;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
@@ -45,5 +45,12 @@ public class IssueServiceTest {
     @Test
     public void throwExceptionIfTurnAroundTimeIsNegative() {
         assertThrows(BadTurnAroundTime.class, () -> issueService.calculateDueDate(calendar, -3));
+    }
+
+    @Test
+    public void throwExceptionIfSubmitDateDayIsWeekEnd() {
+        calendar.set(Calendar.DAY_OF_WEEK, 7);
+
+        assertThrows(BadSubmitDate.class, () -> issueService.calculateDueDate(calendar, 2));
     }
 }
