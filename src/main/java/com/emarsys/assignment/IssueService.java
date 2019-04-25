@@ -7,7 +7,7 @@ import java.util.Calendar;
 public class IssueService {
 
     public Calendar calculateDueDate(Calendar submitDate, int turnAroundTime) {
-        if (turnAroundTime == 0) {
+        if (turnAroundTime <= 0) {
             throw new BadTurnAroundTime("Bad turnaround time!");
         }
         Calendar calendar = Calendar.getInstance();
